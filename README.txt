@@ -1,0 +1,114 @@
+{{Extension|templatemode=
+|name            = EImage
+|status          = stable
+|type1           = parser function
+|hook1           = ParserFirstCallInit
+|hook2           = LoadExtensionSchemaUpdates
+|hook3           = ParserBeforeTidy
+|hook4           = ArticlePurge
+|username        = Robpol86
+|author          = [http://www.robpol86.com/index.php/User:Robpol86 Robpol86]
+|description     = Display images from image hosting services as if they were stored locally.
+|image           = Eimage example.png
+|imagesize       = 200px
+|version         = 2.0.0
+|update          = 2013-02-07
+|mediawiki       = 1.18.2
+|php             = 5.2.3
+|needs-updatephp = yes
+|license         = [http://opensource.org/licenses/MIT MIT]
+|download        = [http://www.robpol86.com/EImage-2.0.0.zip EImage-2.0.0.zip]
+{{GithubDownload|Robpol86|EImage}}
+|example         = [http://robpol86.com/index.php/Workspaces Robpol86.com]
+}}
+
+'''EImage''' allows users to display images from external image hosts as if they were stored locally. External images may be thumbnailed/resized/framed just like local images and the syntax used is very similar to MediaWiki's [[Help:Images|Images]] syntax. EImage can also overlay text on top of images (based on [http://en.wikipedia.org/wiki/Template:Annotated_image Template:Annotated image]).
+
+Some of the features of EImage are:
+* Display Imgur, Flickr, and regular image URLs.
+* Display titles or comments from the image host.
+* Overlay text ontop of images.
+
+==Installation==
+{{ExtensionInstall|download-link=[http://www.robpol86.com/EImage-2.0.0.zip Download]|db-update=Yes}}
+
+==Syntax and Examples==
+EImage has three types of options:
+;Image: The "main" options for displaying the image. This is similar to MediaWiki's [[Help:Images|Images]].
+;Annotation Defaults: Default options that are applied to all annotations in the image.
+;Annotations: This is a separate parser function for an annotation. You can have as many of these as you want.
+
+===Image===
+The full syntax for displaying an image is:
+ <nowiki>{{</nowiki>#eimage:''image''|''options''|''caption''}}
+
+Refer to http://www.mediawiki.org/wiki/Help:Images for detailed descriptions. Below is a list of options available in EImage:
+* ''Image'' option: the ID or URL of the image to display
+*: Imgur usually has 5 to 7 character alphanumeric image IDs (e.g. KO5ZaTX) and Flickr has 10-digit image IDs (e.g. 8055532325).
+*: If a raw URL is entered, you will need to also specify the '''width and height'''.
+* ''Format'' option: one of '''border''' and/or '''frameless''', '''frame''', '''thumb'''
+* ''Resizing'' option: one of
+** ''{width}'''''px'''
+** '''x'''''{height}'''''px'''
+** ''{width}'''''x'''''{height}'''''px'''
+* ''Horizontal alignment'' option: one of '''inline''' and/or '''left''', '''right''', '''center''', '''none'''
+*: The '''inline''' option displays the image(+frame) inline instead of as a floating block (it overrides the float option). Works best with '''none'''. Useful for displaying multiple thumbnails on one line.
+* ''Vertical alignment option'': one of '''baseline''', '''sub''', '''super''', '''top''', '''text-top''', '''middle''', '''bottom''', '''text-bottom'''
+* ''Link option'': one of
+** '''link='''''{target}''
+** '''link='''
+*: Currently only external links that start with http/https/ftp are supported.
+* Other specific options:
+** '''alt='''''{alternative text}''
+
+If a parameter does not match any of the other possibilities, it is assumed to be the caption text. Captions support wiki-formatting. EImage will also replace any instance of '''!!TITLE!!''' or '''!!COMMENT!!''' with the title/subject metadata and with the comments/description metadata from the image host respectively. The same thing applies to '''alt='''.
+
+Some examples:
+ <nowiki>{{#eimage:8055532325|800px|thumb|none|inline|'''!!TITLE!!'''<br />!!COMMENT!!}}</nowiki>
+ <nowiki>{{#eimage:nNBFF|x350px|thumb|link=}}</nowiki>
+ <nowiki>{{#eimage:http://upload.wikimedia.org/wikipedia/mediawiki/e/e1/Eimage_example.png|410x579px|thumb}}</nowiki>
+
+===Annotation Defaults===
+These options change the defaults for all annotations in an image (not all images). If no annotations are used, these are ignored:
+* ''Horizontal alignment'' option: '''aalign='''
+* ''Background color'' option: '''abg='''
+*: Default is transparent
+* ''Font family'' option: '''afamily='''
+* ''Font size'' option: '''asize='''
+* ''Font weight'' option: '''aweight='''
+* ''Font style'' option: '''astyle='''
+* ''Font shadow'' option: '''ashadow='''
+* ''Font color'' option: '''acolor='''
+* ''Line height'' option: '''aheight='''
+
+===Annotations===
+Each image can have any number of annotations. In the {{#eimage}} tag use the '''annot=''' option to specify an annotation. The value of '''annot=''' is another function called ''{{#eimagea}}''. Below are the options available for ''{{#eimagea}}'':
+* ''Horizontal alignment'' option: one of '''left''', '''right''', '''center''', '''justify''', '''inherit'''
+* ''Background color'' option: '''bg='''
+* ''Font family'' option: '''family='''
+* ''Font size'' option: '''size='''
+* ''Font weight'' option: '''weight='''
+* ''Font style'' option: '''style='''
+* ''Font shadow'' option: '''shadow='''
+* ''Font color'' option: '''color='''
+* ''Line height'' option: '''height='''
+
+If a parameter does not match any of the other possibilities, it is assumed to be the annotation text. Annotations support wiki-formatting.
+
+Some examples:
+ <nowiki>{{#eimage:7942213966|200px|thumb|acolor=white|This is the comment from Flickr: !!COMMENT!!
+|annot={{#eimagea:10x20|This is an annotation.}}
+|annot={{#eimagea:20x40|size=20|A bigger annotation.}}
+|annot={{#eimagea:30x60|'''Bold Annotation'''}}
+|annot={{#eimagea:40x80|shadow=-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000|Shadowed Annotation}}
+|annot={{#eimagea:50x100|[http://google.com Linked annotation]}}
+|annot={{#eimagea:60x120|right|This is a long and right justified anotation.}}
+}}</nowiki>
+
+==Credits==
+These are the sources I used for inspiration, ideas, and code.
+* http://en.wikipedia.org/wiki/Template:Annotated_image
+* http://code.fivefilters.org/php-readability/src/15782b1b8ee4/JSLikeHTMLElement.php
+*: A very big help with converting <a href="" /> links common in Flickr comments to wiki-formatted links
+* https://svn.wikia-code.com/vendor/mediawiki/REL1_19/extensions/SelectionSifter/schema/ratings.sql
+
