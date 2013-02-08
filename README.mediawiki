@@ -22,6 +22,8 @@
 |example         = [http://robpol86.com/index.php/Workspaces Robpol86.com]
 }}
 
+<center>'''Official page: http://www.mediawiki.org/wiki/Extension:EImage'''</center>
+
 '''EImage''' allows users to display images from external image hosts as if they were stored locally. External images may be thumbnailed/resized/framed just like local images and the syntax used is very similar to MediaWiki's [[Help:Images|Images]] syntax. EImage can also overlay text on top of images (based on [http://en.wikipedia.org/wiki/Template:Annotated_image Template:Annotated image]).
 
 Some of the features of EImage are:
